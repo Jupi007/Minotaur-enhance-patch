@@ -1,0 +1,17 @@
+{
+  "name": "minotaur",
+  "version": "1.0.0",
+  "main": "minotaur-plus.user.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "esbuild": "^0.25.2",
+    "esbuild-raw-plugin": "^0.2.0"
+  },
+  "type": "module"
+}

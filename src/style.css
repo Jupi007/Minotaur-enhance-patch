@@ -1,0 +1,76 @@
+.fc {
+  margin: 0 auto;
+  margin-top: 3rem;
+  padding: 0 1rem;
+  max-width: 50rem;
+}
+
+.fc-h-event .fc-event-title {
+  text-overflow: ellipsis;
+  font-size: .75em;
+}
+
+.fc .fc-toolbar-title {
+  font-size: 1.5em;
+  text-transform: capitalize;
+}
+
+.fc-day:not(.fc-day-disabled) {
+  cursor: default;
+}
+
+.fc-daygrid-day-number {
+  cursor: default !important;
+}
+
+.fc-event:not(.fc-bg-event):not(.fc-col-header-cell) {
+  cursor: default !important;
+}
+
+.calendar-help {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  margin: 0 auto;
+  margin-top: 1.5rem;
+  margin-bottom: 3rem;
+  padding: 0 1rem;
+  max-width: 50rem;
+}
+
+.calendar-help-square-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.calendar-help-square-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+}
+
+.calendar-help-square {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 3px;
+}
+
+.calendar-help-square--green {
+  accent-color: #18753c;
+  background-color: #18753c;
+}
+
+.calendar-help-square--brown {
+  accent-color: #725c49;
+  background-color: #725c49;
+}
+
+.calendar-help-square--blue {
+  accent-color: #d3e3f7;
+  background-color: #d3e3f7;
+}
