@@ -34,6 +34,9 @@ export function createCalendar(calendarEl, options = {}) {
       center: 'title',
       right: 'today',
     },
+    eventDidMount: function (info) {
+      info.el.setAttribute('title', info.event.title);
+    },
     ...options,
   });
   calendar.render();
