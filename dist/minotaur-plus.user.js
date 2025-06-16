@@ -1,5 +1,6 @@
 // ==UserScript==
 // @name         Minotaur enhance patch
+// @description  Améliore l'interface utilisateur de Minot@ur
 // @icon         https://minotaur.sso.gendarmerie.interieur.gouv.fr/v2/favicons/favicon.svg
 // @version      2025-06-16
 // @grant        GM.xmlHttpRequest
