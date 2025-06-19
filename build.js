@@ -2,7 +2,7 @@ import * as esbuild from 'esbuild';
 import { raw } from "esbuild-raw-plugin";
 import * as fs from 'fs';
 
-const header = fs.readFileSync('./minotaur-plus.meta.js', 'utf8');
+const header = fs.readFileSync('./minotaur-enhance-patch.meta.js', 'utf8');
 
 const watchEnabled = process.argv.includes('--watch');
 const minimifyEnabled = process.argv.includes('--min');
@@ -10,7 +10,7 @@ const minimifyEnabled = process.argv.includes('--min');
 const buildOptions = {
   entryPoints: ['./src/main.js'],
   bundle: true,
-  outfile: './dist/minotaur-plus.user.js',
+  outfile: './dist/minotaur-enhance-patch.user.js',
   banner: { js: header },
   format: 'iife',
   minify: minimifyEnabled,
