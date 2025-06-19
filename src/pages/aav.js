@@ -1,21 +1,24 @@
 import { fetchAvailabilities } from '../endpoints.js';
 import { availabilitiesEventSourceFactory, availabilitiesToEvents, summonsEventSourceFactory, summonsToEvents, volunteeringDeclarationsEventSourceFactory, volunteeringDeclarationsToEvents } from '../event-sources.js';
 import { createCalendar, fetchMinotaur, getValidEndDate } from '../utils.js';
-import helpHtml from './aav/help.html?raw';
+import templateHtml from './aav/template.html?raw';
 
 export class AavPage {
-  calendarEl;
+  templateEl;
   calendar;
-  helpEl;
+
   showAvailabilities = false;
   showSummons = true;
   showVolunteeringDeclarations = true;
 
   constructor() {
     const main = document.querySelector('main');
-    this.calendarEl = document.createElement('div');
 
-    main.prepend(this.calendarEl);
+    this.templateEl = document.createElement('div');
+    this.templateEl.innerHTML = templateHtml;
+    main.prepend(this.templateEl);
+
+    const calendarEl = document.getElementById('calendar');
 
     const validRange = {
       start: new Date(),
@@ -23,7 +26,7 @@ export class AavPage {
     };
 
     this.calendar = createCalendar(
-      this.calendarEl,
+      calendarEl,
       {
         validRange: validRange,
         eventSources: [
@@ -82,26 +85,22 @@ export class AavPage {
       }
     );
 
-    this.helpEl = document.createElement('div');
-    this.helpEl.innerHTML = helpHtml;
-    this.calendarEl.after(this.helpEl);
-
     const availabilitiesCheckbox = document.getElementById('availabilities-checkbox');
-    availabilitiesCheckbox.addEventListener('click', (e) => {
+    availabilitiesCheckbox.addEventListener('click', (_) => {
       this.showAvailabilities = availabilitiesCheckbox.checked;
       this.calendar.refetchEvents();
       this.calendar.unselect();
     });
 
     const summonsCheckbox = document.getElementById('summons-checkbox');
-    summonsCheckbox.addEventListener('click', (e) => {
+    summonsCheckbox.addEventListener('click', (_) => {
       this.showSummons = summonsCheckbox.checked;
       this.calendar.refetchEvents();
       this.calendar.unselect();
     });
 
     const volunteeringDeclarationsCheckbox = document.getElementById('volunteering-declarations-checkbox');
-    volunteeringDeclarationsCheckbox.addEventListener('click', (e) => {
+    volunteeringDeclarationsCheckbox.addEventListener('click', (_) => {
       this.showVolunteeringDeclarations = volunteeringDeclarationsCheckbox.checked;
       this.calendar.refetchEvents();
       this.calendar.unselect();
@@ -110,7 +109,6 @@ export class AavPage {
 
   destroy() {
     this.calendar.destroy();
-    this.calendarEl.remove();
-    this.helpEl.remove();
+    this.templateEl.remove();
   }
 }

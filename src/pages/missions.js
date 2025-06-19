@@ -1,19 +1,23 @@
 import { addAvailabilityRequest, fetchAvailabilities, removeAvailabilityRequest } from '../endpoints.js';
 import { availabilitiesEventSourceFactory, availabilitiesToEvents, EventSources, summonsEventSourceFactory, summonsToEvents } from '../event-sources.js';
 import { createCalendar, fetchMinotaur, getValidEndDate } from '../utils.js';
-import helpHtml from './missions/help.html?raw';
+import templateHtml from './aav/template.html?raw';
 
 export class MissionsPage {
-  calendarEl;
+  templateEl;
   calendar;
-  helpEl;
+
   locked = false;
   showSummons = true;
 
   constructor() {
     const main = document.querySelector('main');
-    this.calendarEl = document.createElement("div");
-    main.prepend(this.calendarEl);
+
+    this.templateEl = document.createElement('div');
+    this.templateEl.innerHTML = templateHtml;
+    main.prepend(this.templateEl);
+
+    const calendarEl = document.getElementById('calendar');
 
     const validRange = {
       start: new Date(),
@@ -21,7 +25,7 @@ export class MissionsPage {
     };
 
     this.calendar = createCalendar(
-      this.calendarEl,
+      calendarEl,
       {
         eventSources: [
           availabilitiesEventSourceFactory(async (info, successCallback, failureCallback) => {
@@ -59,10 +63,6 @@ export class MissionsPage {
       }
     );
 
-    this.helpEl = document.createElement('div');
-    this.helpEl.innerHTML = helpHtml;
-    this.calendarEl.after(this.helpEl);
-
     const summonsCheckbox = document.getElementById('summons-checkbox');
     summonsCheckbox.addEventListener('click', (e) => {
       this.showSummons = summonsCheckbox.checked;
@@ -73,8 +73,7 @@ export class MissionsPage {
 
   destroy() {
     this.calendar.destroy();
-    this.calendarEl.remove();
-    this.helpEl.remove();
+    this.templateEl.remove();
   }
 
   onDateClick(info) {
