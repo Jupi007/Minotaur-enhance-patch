@@ -28,6 +28,8 @@ Entrez l'adresse suivante dans la boîte de dialogue, puis validez :
 
 **https://github.com/Jupi007/Minotaur-enhance-patch/raw/refs/heads/dist/dist/minotaur-enhance-patch.user.js**
 
-Afin appuyez sur le bouton "Installer"
+Afin appuyez sur le bouton "Install" :
+
+![](./.github/screenshots/violentmonkey-script.png)
 
 Accédez à Minot@ur, un calendrier devrait s'afficher sur les pages "Mes missions et disponibilités" et "Appels à volontaires"
