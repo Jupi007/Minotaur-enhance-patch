@@ -1,7 +1,7 @@
 import { addAvailabilityRequest, fetchAvailabilities, removeAvailabilityRequest } from '../endpoints.js';
-import { availabilitiesEventSourceFactory, availabilitiesToEvents, EventSources, summonsEventSourceFactory, summonsToEvents } from '../event-sources.js';
+import { availabilitiesEventSourceFactory, availabilitiesToEvents, EventSources, summonsEventSourceFactory, summonsToEvents, volunteeringDeclarationsEventSourceFactory, volunteeringDeclarationsToEvents } from '../event-sources.js';
 import { createCalendar, fetchMinotaur, getValidEndDate } from '../utils.js';
-import templateHtml from './aav/template.html?raw';
+import templateHtml from './missions/template.html?raw';
 
 export class MissionsPage {
   templateEl;
@@ -9,6 +9,7 @@ export class MissionsPage {
 
   locked = false;
   showSummons = true;
+  showVolunteeringDeclarations = false;
 
   constructor() {
     const main = document.querySelector('main');
@@ -56,6 +57,23 @@ export class MissionsPage {
               failureCallback(error);
             }
           }),
+          volunteeringDeclarationsEventSourceFactory(async (info, successCallback, failureCallback) => {
+            if (!this.showVolunteeringDeclarations) {
+              successCallback([]);
+              return;
+            }
+
+            const minDate = new Date();
+            const endDate = getValidEndDate();
+
+            try {
+              const volunteeringDeclarationsResponse = await fetchMinotaur('GET', `/volunteering-declarations?minDate=${minDate.toISOString()}&maxDate=${endDate.toISOString()}`);
+              const volunteeringDeclarations = JSON.parse(volunteeringDeclarationsResponse.responseText);
+              successCallback(volunteeringDeclarationsToEvents(volunteeringDeclarations));
+            } catch (error) {
+              failureCallback(error);
+            }
+          }),
         ],
         selectable: true,
         validRange: validRange,
@@ -66,6 +84,13 @@ export class MissionsPage {
     const summonsCheckbox = document.getElementById('summons-checkbox');
     summonsCheckbox.addEventListener('click', (e) => {
       this.showSummons = summonsCheckbox.checked;
+      this.calendar.refetchEvents();
+      this.calendar.unselect();
+    });
+
+    const volunteeringDeclarationsCheckbox = document.getElementById('volunteering-declarations-checkbox');
+    volunteeringDeclarationsCheckbox.addEventListener('click', (_) => {
+      this.showVolunteeringDeclarations = volunteeringDeclarationsCheckbox.checked;
       this.calendar.refetchEvents();
       this.calendar.unselect();
     });

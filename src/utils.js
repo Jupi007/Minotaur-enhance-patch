@@ -61,3 +61,39 @@ export function getValidEndDate() {
   nextYear.setMonth(nextYear.getMonth() - 1);
   return new Date(nextYear.getFullYear(), nextYear.getMonth() + 1, 0);
 }
+
+function _stringToHash(string) {
+  let hash = 0;
+  for (let i = 0; i < string.length; i++) {
+    hash = string.charCodeAt(i) + ((hash << 5) - hash);
+    hash = hash & hash;
+  }
+  return Math.abs(hash);
+}
+
+export function stringToBlueVariant(string) {
+  const hash = _stringToHash(string);
+  const hue = 190 + (hash % 61);
+  const saturation = 50 + (hash % 31);
+  const lightness = 25 + (hash % 16);
+
+  return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+}
+
+export function stringToBrownVariant(string) {
+  const hash = _stringToHash(string);
+  const hue = 10 + (hash % 50);
+  const saturation = 20 + (hash % 36);
+  const lightness = 25 + (hash % 16);
+
+  return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+}
+
+export function stringToGreenVariant(string) {
+  const hash = _stringToHash(string);
+  const hue = 130 + (hash % 31);
+  const saturation = 50 + (hash % 26);
+  const lightness = 25 + (hash % 16);
+
+  return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+}

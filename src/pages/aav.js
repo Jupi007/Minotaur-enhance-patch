@@ -1,5 +1,5 @@
 import { fetchAvailabilities } from '../endpoints.js';
-import { availabilitiesEventSourceFactory, availabilitiesToEvents, summonsEventSourceFactory, summonsToEvents, volunteeringDeclarationsEventSourceFactory, volunteeringDeclarationsToEvents } from '../event-sources.js';
+import { availabilitiesEventSourceFactory, availabilitiesToEvents, summonsEventSourceFactory, summonsToEvents, volunteerCallsEventSourceFactory, volunteerCallsToEvents, volunteeringDeclarationsEventSourceFactory, volunteeringDeclarationsToEvents } from '../event-sources.js';
 import { createCalendar, fetchMinotaur, getValidEndDate } from '../utils.js';
 import templateHtml from './aav/template.html?raw';
 
@@ -10,6 +10,7 @@ export class AavPage {
   showAvailabilities = false;
   showSummons = true;
   showVolunteeringDeclarations = true;
+  showVolunteerCalls = false;
 
   constructor() {
     const main = document.querySelector('main');
@@ -30,7 +31,6 @@ export class AavPage {
       {
         validRange: validRange,
         eventSources: [
-
           availabilitiesEventSourceFactory(async (info, successCallback, failureCallback) => {
             if (!this.showAvailabilities) {
               successCallback([]);
@@ -81,6 +81,23 @@ export class AavPage {
               failureCallback(error);
             }
           }),
+          volunteerCallsEventSourceFactory(async (info, successCallback, failureCallback) => {
+            if (!this.showVolunteerCalls) {
+              successCallback([]);
+              return;
+            }
+
+            const minDate = new Date();
+            const endDate = getValidEndDate();
+
+            try {
+              const volunteerCallsResponse = await fetchMinotaur('GET', `/missions?status=missions&minDate=${minDate.toISOString()}&maxDate=${endDate.toISOString()}&limit=9999999`);
+              const volunteerCalls = JSON.parse(volunteerCallsResponse.responseText);
+              successCallback(volunteerCallsToEvents(volunteerCalls));
+            } catch (error) {
+              failureCallback(error);
+            }
+          }),
         ],
       }
     );
@@ -102,6 +119,13 @@ export class AavPage {
     const volunteeringDeclarationsCheckbox = document.getElementById('volunteering-declarations-checkbox');
     volunteeringDeclarationsCheckbox.addEventListener('click', (_) => {
       this.showVolunteeringDeclarations = volunteeringDeclarationsCheckbox.checked;
+      this.calendar.refetchEvents();
+      this.calendar.unselect();
+    });
+
+    const volunteerCallsCheckbox = document.getElementById('volunteer-calls-checkbox');
+    volunteerCallsCheckbox.addEventListener('click', (_) => {
+      this.showVolunteerCalls = volunteerCallsCheckbox.checked;
       this.calendar.refetchEvents();
       this.calendar.unselect();
     });

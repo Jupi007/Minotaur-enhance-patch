@@ -1,14 +1,14 @@
 // ==UserScript==
 // @name         Minotaur enhance patch
 // @description  Améliore l'interface utilisateur de Minot@ur
-// @icon         https://minotaur.sso.gendarmerie.interieur.gouv.fr/v2/favicons/favicon.svg
+// @icon         https://www.interieur.gouv.fr/themes/custom/dsfr/src/images/logo/favicon.png
 // @version      2025-06-16
 // @grant        GM.xmlHttpRequest
 // @require      https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js
 // @match        https://minotaur.sso.gendarmerie.interieur.gouv.fr/*
 // ==/UserScript==
 
-(()=>{var N="https://minotaur.sso.gendarmerie.interieur.gouv.fr/v2/data";function R(a){let e=document.createElement("style");return e.textContent=a,document.head.appendChild(e),e}function d(a,e,t=null,n={}){return new Promise((i,r)=>{GM.xmlHttpRequest({method:a,url:N+e,data:t,headers:n,onload:c=>{i(c)},onerror:c=>{r(c)}})})}function v(a,e={}){let t=new FullCalendar.Calendar(a,{locale:"fr",height:"auto",firstDay:1,headerToolbar:{left:"prev,next",center:"title",right:"today"},eventDidMount:function(n){n.el.setAttribute("title",n.event.title)},...e});return t.render(),t}function A(a){let e=a.getFullYear(),t=`${a.getMonth()+1}`.padStart(2,"0"),n=`${a.getDate()}`.padStart(2,"0");return`${e}-${t}-${n}`}function g(a){return a>=200&&a<300}function h(){let a=new Date,e=new Date(a);return e.setFullYear(a.getFullYear()+1),e.setMonth(e.getMonth()-1),new Date(e.getFullYear(),e.getMonth()+1,0)}var q="X-CSRF-TOKEN",L=[];async function C(a){if(a in L)return L[a];let e=await d("GET",`/csrf-token/${a}`),t=JSON.parse(e.responseText).csrfToken;return L[a]=t,t}function y(a,e){return new Promise(async(t,n)=>{let i;try{let r=await d("GET",`/availabilities?minDate=${a}&maxDate=${e}&limit=9999999&page=1`);i=JSON.parse(r.responseText),g(r.status)?t(i):n(`Error unexpected response code ${r.status}`)}catch(r){n(r)}})}function P(a){return new Promise(async(e,t)=>{try{let n=await d("POST",`/availabilities/${a}`,null,{[q]:await C("availabilitiesdelete")});g(n.status)?e():t(`Error unexpected response code ${n.status}`)}catch(n){t(n)}})}function E(a,e,t=null){return new Promise(async(n,i)=>{try{let r=await d("POST","/availabilities",JSON.stringify({id:t??"",start:A(a),end:A(e)}),{[q]:await C("availabilities")});g(r.status)?n():i(`Error unexpected response code ${r.status}`)}catch(r){i(r)}})}var f=Object.freeze({AVAILABILITIES:"availabilities",SUMMONS:"summons",VOLUNTEERING_DECLARATIONS:"volunteeringDeclarations"});function D(a){return{events:a,id:f.AVAILABILITIES,display:"background",color:"#6ca3e3"}}function S(a){return a.items.map(e=>{let t=new Date(e.end);return t.setDate(t.getDate()+1),{id:e.id,start:e.start,end:t,allDay:!0}})}function b(a){return{events:a,id:f.SUMMONS,color:"#18753c"}}function w(a){return a.items.map(e=>{let t=new Date(e.end);return t.setDate(t.getDate()+1),{start:e.start,end:t,allDay:!0,title:e.missionObjet}})}function M(a){return{events:a,id:f.VOLUNTEERING_DECLARATIONS,color:"#725c49"}}function $(a){return a.items.map(e=>{let t=new Date(e.end);return t.setDate(t.getDate()+1),{start:e.start,end:t,allDay:!0,title:e.objet}})}var x=`<div id="calendar"></div>
+(()=>{var $="https://minotaur.sso.gendarmerie.interieur.gouv.fr/v2/data";function R(n){let e=document.createElement("style");return e.textContent=n,document.head.appendChild(e),e}function h(n,e,t=null,a={}){return new Promise((r,s)=>{GM.xmlHttpRequest({method:n,url:$+e,data:t,headers:a,onload:l=>{r(l)},onerror:l=>{s(l)}})})}function b(n,e={}){let t=new FullCalendar.Calendar(n,{locale:"fr",height:"auto",firstDay:1,headerToolbar:{left:"prev,next",center:"title",right:"today"},eventDidMount:function(a){a.el.setAttribute("title",a.event.title)},...e});return t.render(),t}function L(n){let e=n.getFullYear(),t=`${n.getMonth()+1}`.padStart(2,"0"),a=`${n.getDate()}`.padStart(2,"0");return`${e}-${t}-${a}`}function E(n){return n>=200&&n<300}function p(){let n=new Date,e=new Date(n);return e.setFullYear(n.getFullYear()+1),e.setMonth(e.getMonth()-1),new Date(e.getFullYear(),e.getMonth()+1,0)}function C(n){let e=0;for(let t=0;t<n.length;t++)e=n.charCodeAt(t)+((e<<5)-e),e=e&e;return Math.abs(e)}function V(n){let e=C(n),t=190+e%61,a=50+e%31,r=25+e%16;return`hsl(${t}, ${a}%, ${r}%)`}function P(n){let e=C(n),t=10+e%50,a=20+e%36,r=25+e%16;return`hsl(${t}, ${a}%, ${r}%)`}function M(n){let e=C(n),t=130+e%31,a=50+e%26,r=25+e%16;return`hsl(${t}, ${a}%, ${r}%)`}var B="X-CSRF-TOKEN",N=[];async function F(n){if(n in N)return N[n];let e=await h("GET",`/csrf-token/${n}`),t=JSON.parse(e.responseText).csrfToken;return N[n]=t,t}function D(n,e){return new Promise(async(t,a)=>{let r;try{let s=await h("GET",`/availabilities?minDate=${n}&maxDate=${e}&limit=9999999&page=1`);r=JSON.parse(s.responseText),E(s.status)?t(r):a(`Error unexpected response code ${s.status}`)}catch(s){a(s)}})}function _(n){return new Promise(async(e,t)=>{try{let a=await h("POST",`/availabilities/${n}`,null,{[B]:await F("availabilitiesdelete")});E(a.status)?e():t(`Error unexpected response code ${a.status}`)}catch(a){t(a)}})}function y(n,e,t=null){return new Promise(async(a,r)=>{try{let s=await h("POST","/availabilities",JSON.stringify({id:t??"",start:L(n),end:L(e)}),{[B]:await F("availabilities")});E(s.status)?a():r(`Error unexpected response code ${s.status}`)}catch(s){r(s)}})}var f=Object.freeze({AVAILABILITIES:"availabilities",SUMMONS:"summons",VOLUNTEERING_DECLARATIONS:"volunteeringDeclarations",VOLUNTEER_CALLS:"volunteerCalls"});function S(n){return{events:n,id:f.AVAILABILITIES,display:"background",color:"#6ca3e3"}}function x(n){return n.items.map(e=>{let t=new Date(e.end);return t.setDate(t.getDate()+1),{id:e.id,start:e.start,end:t,allDay:!0}})}function w(n){return{events:n,id:f.SUMMONS}}function T(n){return n.items.map(e=>{let t=new Date(e.end);return t.setDate(t.getDate()+1),{start:e.start,end:t,allDay:!0,title:e.missionObjet,color:M(e.missionObjet+e.start+e.end)}})}function k(n){return{events:n,id:f.VOLUNTEERING_DECLARATIONS}}function I(n){return n.items.map(e=>{let t=new Date(e.end);return t.setDate(t.getDate()+1),{start:e.start,end:t,allDay:!0,title:e.objet,color:P(e.objet+e.missionStart+e.missionEnd)}})}function G(n){return{events:n,id:f.VOLUNTEER_CALLS}}function H(n){return n.items.map(e=>{let t=new Date(e.end);return t.setDate(t.getDate()+1),{start:e.start,end:t,allDay:!0,title:e.objet,color:V(e.objet+e.missionStart+e.missionEnd)}})}var J=`<div id="calendar"></div>
 
 <div class="calendar-help">
 	<div class="calendar-help-square-container">
@@ -24,9 +24,35 @@
 			<input id="summons-checkbox" type="checkbox" class="calendar-help-square calendar-help-square--green" checked>
 			<label for="summons-checkbox">CONVOCATIONS</label>
 		</div>
+		<div class="calendar-help-square-item">
+			<input id="volunteer-calls-checkbox" type="checkbox" class="calendar-help-square calendar-help-square--dark-blue">
+			<label for="volunteer-calls-checkbox">APPELS A VOLONTAIRE</label>
+		</div>
 	</div>
 </div>
-`;var T=class{templateEl;calendar;showAvailabilities=!1;showSummons=!0;showVolunteeringDeclarations=!0;constructor(){let e=document.querySelector("main");this.templateEl=document.createElement("div"),this.templateEl.innerHTML=x,e.prepend(this.templateEl);let t=document.getElementById("calendar"),n={start:new Date,end:h()};this.calendar=v(t,{validRange:n,eventSources:[D(async(u,s,m)=>{if(!this.showAvailabilities){s([]);return}let o=new Date,p=h();try{let l=await y(o.toISOString(),p.toISOString());s(S(l))}catch(l){m(l)}}),b(async(u,s,m)=>{if(!this.showSummons){s([]);return}let o=new Date,p=h();try{let l=await d("GET",`/convocations?minDate=${o.toISOString()}&maxDate=${p.toISOString()}`),O=JSON.parse(l.responseText);s(w(O))}catch(l){m(l)}}),M(async(u,s,m)=>{if(!this.showVolunteeringDeclarations){s([]);return}let o=new Date,p=h();try{let l=await d("GET",`/volunteering-declarations?minDate=${o.toISOString()}&maxDate=${p.toISOString()}`),O=JSON.parse(l.responseText);s($(O))}catch(l){m(l)}})]});let i=document.getElementById("availabilities-checkbox");i.addEventListener("click",u=>{this.showAvailabilities=i.checked,this.calendar.refetchEvents(),this.calendar.unselect()});let r=document.getElementById("summons-checkbox");r.addEventListener("click",u=>{this.showSummons=r.checked,this.calendar.refetchEvents(),this.calendar.unselect()});let c=document.getElementById("volunteering-declarations-checkbox");c.addEventListener("click",u=>{this.showVolunteeringDeclarations=c.checked,this.calendar.refetchEvents(),this.calendar.unselect()})}destroy(){this.calendar.destroy(),this.templateEl.remove()}};var k=class{templateEl;calendar;locked=!1;showSummons=!0;constructor(){let e=document.querySelector("main");this.templateEl=document.createElement("div"),this.templateEl.innerHTML=x,e.prepend(this.templateEl);let t=document.getElementById("calendar"),n={start:new Date,end:h()};this.calendar=v(t,{eventSources:[D(async(r,c,u)=>{let s=new Date,m=h();try{let o=await y(s.toISOString(),m.toISOString());c(S(o))}catch(o){u(o)}}),b(async(r,c,u)=>{if(!this.showSummons){c([]);return}let s=new Date,m=h();try{let o=await d("GET",`/convocations?minDate=${s.toISOString()}&maxDate=${m.toISOString()}`),p=JSON.parse(o.responseText);c(w(p))}catch(o){u(o)}})],selectable:!0,validRange:n,dateClick:r=>this.onDateClick(r)});let i=document.getElementById("summons-checkbox");i.addEventListener("click",r=>{this.showSummons=i.checked,this.calendar.refetchEvents(),this.calendar.unselect()})}destroy(){this.calendar.destroy(),this.templateEl.remove()}onDateClick(e){let t=e.date,n=t.getTime(),i=this.calendar.getEvents().filter(r=>{if(r.source.id===f.AVAILABILITIES)return n>=r.start.getTime()&&n<r.end.getTime()});i.length>0?i.forEach(r=>{this.removeAvailability(r,t)}):this.addAvailability(t)}async removeAvailability(e,t){if(!this.locked){this.locked=!0;try{await P(e.id);let n=new Date(e.end);if(n.setDate(n.getDate()-1),e.start.getTime()<t.getTime()){let i=new Date(t);i.setDate(i.getDate()-1),await E(e.start,i)}if(n.getTime()>t.getTime()){let i=new Date(t);i.setDate(i.getDate()+1),await E(i,n)}}finally{this.calendar.refetchEvents(),this.calendar.unselect(),this.locked=!1}}}async addAvailability(e){if(!this.locked){this.locked=!0;try{await E(e,e)}finally{this.calendar.refetchEvents(),this.calendar.unselect(),this.locked=!1}}}};var I=class{currentPage=null;constructor(){this.initNewPage();let e=history.pushState;history.pushState=(...t)=>{e.apply(history,t),this.destroyCurrentPage(),this.initNewPage()},window.addEventListener("popstate",()=>{this.destroyCurrentPage(),this.initNewPage()})}destroyCurrentPage(){this.currentPage!==null&&(this.currentPage.destroy(),this.currentPage=null)}initNewPage(){location.href.endsWith("missions")?this.currentPage=new k:location.href.endsWith("aav")&&(this.currentPage=new T)}};var F=`.fc {
+`;var O=class{templateEl;calendar;showAvailabilities=!1;showSummons=!0;showVolunteeringDeclarations=!0;showVolunteerCalls=!1;constructor(){let e=document.querySelector("main");this.templateEl=document.createElement("div"),this.templateEl.innerHTML=J,e.prepend(this.templateEl);let t=document.getElementById("calendar"),a={start:new Date,end:p()};this.calendar=b(t,{validRange:a,eventSources:[S(async(d,o,u)=>{if(!this.showAvailabilities){o([]);return}let i=new Date,m=p();try{let c=await D(i.toISOString(),m.toISOString());o(x(c))}catch(c){u(c)}}),w(async(d,o,u)=>{if(!this.showSummons){o([]);return}let i=new Date,m=p();try{let c=await h("GET",`/convocations?minDate=${i.toISOString()}&maxDate=${m.toISOString()}`),g=JSON.parse(c.responseText);o(T(g))}catch(c){u(c)}}),k(async(d,o,u)=>{if(!this.showVolunteeringDeclarations){o([]);return}let i=new Date,m=p();try{let c=await h("GET",`/volunteering-declarations?minDate=${i.toISOString()}&maxDate=${m.toISOString()}`),g=JSON.parse(c.responseText);o(I(g))}catch(c){u(c)}}),G(async(d,o,u)=>{if(!this.showVolunteerCalls){o([]);return}let i=new Date,m=p();try{let c=await h("GET",`/missions?status=missions&minDate=${i.toISOString()}&maxDate=${m.toISOString()}&limit=9999999`),g=JSON.parse(c.responseText);o(H(g))}catch(c){u(c)}})]});let r=document.getElementById("availabilities-checkbox");r.addEventListener("click",d=>{this.showAvailabilities=r.checked,this.calendar.refetchEvents(),this.calendar.unselect()});let s=document.getElementById("summons-checkbox");s.addEventListener("click",d=>{this.showSummons=s.checked,this.calendar.refetchEvents(),this.calendar.unselect()});let l=document.getElementById("volunteering-declarations-checkbox");l.addEventListener("click",d=>{this.showVolunteeringDeclarations=l.checked,this.calendar.refetchEvents(),this.calendar.unselect()});let v=document.getElementById("volunteer-calls-checkbox");v.addEventListener("click",d=>{this.showVolunteerCalls=v.checked,this.calendar.refetchEvents(),this.calendar.unselect()})}destroy(){this.calendar.destroy(),this.templateEl.remove()}};var U=`<div id="calendar"></div>
+
+<div class="calendar-help">
+	<div>
+		Clickez sur une date pour ajouter/supprimer une disponibilit\xE9.<br>
+		Attention, cela ne mettra pas \xE0 jour les informations plus bas. Il sera n\xE9cessaire de recharger la page pour actualiser les donn\xE9es.
+	</div>
+	<div class="calendar-help-square-container">
+		<div class="calendar-help-square-item">
+			<div class="calendar-help-square calendar-help-square--blue"></div>
+			DISPONIBILIT\xC9S
+		</div>
+		<div class="calendar-help-square-item">
+			<input id="summons-checkbox" type="checkbox" class="calendar-help-square calendar-help-square--green" checked>
+			<label for="summons-checkbox">CONVOCATIONS</label>
+		</div>
+		<div class="calendar-help-square-item">
+			<input id="volunteering-declarations-checkbox" type="checkbox" class="calendar-help-square calendar-help-square--brown">
+			<label for="volunteering-declarations-checkbox">VOLONTARIATS</label>
+		</div>
+	</div>
+</div>
+`;var A=class{templateEl;calendar;locked=!1;showSummons=!0;showVolunteeringDeclarations=!1;constructor(){let e=document.querySelector("main");this.templateEl=document.createElement("div"),this.templateEl.innerHTML=U,e.prepend(this.templateEl);let t=document.getElementById("calendar"),a={start:new Date,end:p()};this.calendar=b(t,{eventSources:[S(async(l,v,d)=>{let o=new Date,u=p();try{let i=await D(o.toISOString(),u.toISOString());v(x(i))}catch(i){d(i)}}),w(async(l,v,d)=>{if(!this.showSummons){v([]);return}let o=new Date,u=p();try{let i=await h("GET",`/convocations?minDate=${o.toISOString()}&maxDate=${u.toISOString()}`),m=JSON.parse(i.responseText);v(T(m))}catch(i){d(i)}}),k(async(l,v,d)=>{if(!this.showVolunteeringDeclarations){v([]);return}let o=new Date,u=p();try{let i=await h("GET",`/volunteering-declarations?minDate=${o.toISOString()}&maxDate=${u.toISOString()}`),m=JSON.parse(i.responseText);v(I(m))}catch(i){d(i)}})],selectable:!0,validRange:a,dateClick:l=>this.onDateClick(l)});let r=document.getElementById("summons-checkbox");r.addEventListener("click",l=>{this.showSummons=r.checked,this.calendar.refetchEvents(),this.calendar.unselect()});let s=document.getElementById("volunteering-declarations-checkbox");s.addEventListener("click",l=>{this.showVolunteeringDeclarations=s.checked,this.calendar.refetchEvents(),this.calendar.unselect()})}destroy(){this.calendar.destroy(),this.templateEl.remove()}onDateClick(e){let t=e.date,a=t.getTime(),r=this.calendar.getEvents().filter(s=>{if(s.source.id===f.AVAILABILITIES)return a>=s.start.getTime()&&a<s.end.getTime()});r.length>0?r.forEach(s=>{this.removeAvailability(s,t)}):this.addAvailability(t)}async removeAvailability(e,t){if(!this.locked){this.locked=!0;try{await _(e.id);let a=new Date(e.end);if(a.setDate(a.getDate()-1),e.start.getTime()<t.getTime()){let r=new Date(t);r.setDate(r.getDate()-1),await y(e.start,r)}if(a.getTime()>t.getTime()){let r=new Date(t);r.setDate(r.getDate()+1),await y(r,a)}}finally{this.calendar.refetchEvents(),this.calendar.unselect(),this.locked=!1}}}async addAvailability(e){if(!this.locked){this.locked=!0;try{await y(e,e)}finally{this.calendar.refetchEvents(),this.calendar.unselect(),this.locked=!1}}}};var q=class{currentPage=null;constructor(){this.initNewPage();let e=history.pushState;history.pushState=(...t)=>{e.apply(history,t),this.destroyCurrentPage(),this.initNewPage()},window.addEventListener("popstate",()=>{this.destroyCurrentPage(),this.initNewPage()})}destroyCurrentPage(){this.currentPage!==null&&(this.currentPage.destroy(),this.currentPage=null)}initNewPage(){location.href.endsWith("missions")?this.currentPage=new A:location.href.endsWith("aav")&&(this.currentPage=new O)}};var j=`.fc {
   margin: 0 auto;
   margin-top: 3rem;
   padding: 0 1rem;
@@ -53,6 +79,23 @@
 
 .fc-event:not(.fc-bg-event):not(.fc-col-header-cell) {
   cursor: default !important;
+}
+
+.fc-daygrid-event {
+  border-radius: 1000px;
+}
+
+.fc-daygrid-block-event .fc-event-title {
+  padding-left: .5rem;
+  padding-right: .5rem;
+}
+
+.fc-daygrid-event.fc-event-start:not(.fc-event-end) {
+  margin-left: 1.5rem;
+}
+
+.fc-daygrid-event.fc-event-end:not(.fc-event-start) {
+  margin-right: 1.5rem;
 }
 
 .calendar-help {
@@ -102,4 +145,9 @@
   accent-color: #d3e3f7;
   background-color: #d3e3f7;
 }
-`;document.addEventListener("DOMContentLoaded",()=>{R(F),new I});})();
+
+.calendar-help-square--dark-blue {
+  accent-color: #0063cb;
+  background-color: #0063cb;
+}
+`;document.addEventListener("DOMContentLoaded",()=>{R(j),new q});})();

@@ -13,5 +13,8 @@
     "esbuild": "^0.25.2",
     "esbuild-raw-plugin": "^0.2.0"
   },
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "string-to-color": "^2.2.2"
+  }
 }
