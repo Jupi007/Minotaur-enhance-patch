@@ -15,7 +15,8 @@ ATTENTION, N'INSTALLEZ JAMAIS UN SCRIPT DONT VOUS N'ÊTES PAS SÛR DE LA SOURCE 
 
 ## Installation du script
 
-Accédez aux paramètres de l'extension en cliquant sur la roue crantée :
+l'icône de l'extension est un singe aux yeux rouges, cliquez sur celle-ci pour ouvrir le menu de l'extension.
+Accédez aux paramètres de l'extension en cliquant sur la roue crantée (il est nécessaire de passer par les paramètres pour utiliser un script depuis une URL) :
 
 ![](./.github/screenshots/violentmonkey-menu.png)
 
